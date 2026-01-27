@@ -1,3 +1,7 @@
+using Aplication.Interfaces;
+using Domain.Events;
+using Infrastructure.Events;
+using Infrastructure.Events.Handlers;
 using Infrastructure.Persistence.Mongo;
 using Infrastructure.Persistence.Mongo.Seed;
 using Infrastructure.Persistence.MySql;
@@ -18,6 +22,10 @@ builder.Services.Configure<MongoSettings>(builder.Configuration.GetSection("Mong
 builder.Services.AddSingleton<MongoContext>();
 
 builder.Services.AddTransient<MongoSeed>();
+
+builder.Services.AddScoped<IEventDispacher, InMemoryEventDispatcher>();
+builder.Services.AddScoped<IDomainEventHandler<CreateResevationEvent>, CarReservedEventHandler>();
+
 
 // Add services to the container.
 

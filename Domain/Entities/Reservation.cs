@@ -1,9 +1,13 @@
-﻿using Domain.ValueObjects;
+﻿using Domain.Events;
+using Domain.ValueObjects;
 
 namespace Domain.Entities
 {
     public class Reservation : EntityBase
     {
+        private readonly List<object> _domainEvents = new();
+        public IReadOnlyCollection<object> DomainEvents => _domainEvents.AsReadOnly();
+
         public Car Car { get; set; }
         public Customer Customer { get; set; }
         public DateRange DateRange { get; set; }
@@ -23,6 +27,18 @@ namespace Domain.Entities
             DateRange = dateRange;
             PickUpLocation = PickUp;
             DropOffLocation = DropOff;
+
+            AddDomainEvent(new CreateResevationEvent(car.Id, Id));
+        }
+
+        private void AddDomainEvent(object domainEvent)
+        {
+            _domainEvents.Add(domainEvent);
+        }
+
+        public void ClearDomainEvents()
+        {
+            _domainEvents.Clear();
         }
     }
 }
