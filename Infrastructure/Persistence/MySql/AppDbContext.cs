@@ -1,7 +1,7 @@
 ﻿using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace Infrastructure.Data
+namespace Infrastructure.Persistence.MySql
 {
     public class AppDbContext : DbContext
     {
@@ -37,6 +37,16 @@ namespace Infrastructure.Data
             modelBuilder.Entity<Reservation>(entity =>
             {
                 entity.HasKey(e => e.Id);
+                entity.OwnsOne(r => r.DateRange, dr =>
+                {
+                    dr.Property(p => p.StartDate)
+                        .HasColumnName("StartDate")
+                        .IsRequired();
+
+                    dr.Property(p => p.EndDate)
+                        .HasColumnName("EndDate")
+                        .IsRequired();
+                });
             });
         }
     }

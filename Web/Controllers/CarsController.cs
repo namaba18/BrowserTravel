@@ -14,7 +14,7 @@ namespace Web.Controllers
         }
 
         [HttpPost(Name = "CreateReservation")]
-        public string Posto()
+        public string Post()
         {
             return "Reservation success";
         }

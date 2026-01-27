@@ -58,5 +58,10 @@
         public CarStatus Status { get; set; }
         public Location Location { get; set; }
 
+        public Car()
+        {
+            
+        }
+
     }
 }
