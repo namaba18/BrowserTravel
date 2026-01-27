@@ -6,10 +6,15 @@
         public string Address { get; set; }
         public string City { get; set; }
         public string State { get; set; }
+        
 
-        public Location()
+        public Location() { }
+
+        public Location(string state, string city, string address)
         {
-            
+            State = state;
+            City = city;
+            Address = address;
         }
     }
 }
