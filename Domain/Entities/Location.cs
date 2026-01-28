@@ -12,11 +12,12 @@ namespace Domain.Entities
 
         private Location() { }
 
-        public Location(string state, string city, string address)
+        public Location(string state, string city, string address, string name)
         {
             State = state;
             City = city;
             Address = address;
+            Name = name;
         }
     }
 }

@@ -37,9 +37,9 @@ namespace Infrastructure.Persistence.MySql.Seed
 
             var locations = new List<Location>
         {
-            new Location( "Cundinamarca", "Bogotá", "Cl 4 34 56"){Name="Cundinamarca"},
-            new Location( "Antioquia", "Medellin", "Cl 5 36 56"){Name="Medellin"},
-            new Location( "Cauca", "Cali", "Cl 67 24 56"){Name="Cali"},
+            new( "Cundinamarca", "Bogotá", "Cl 4 34 56", "Cundinamarca"),
+            new( "Antioquia", "Medellin", "Cl 5 36 56", "Medellin"),
+            new( "Cauca", "Cali", "Cl 67 24 56", "Cali"),
         };
 
             _context.Locations.AddRange(locations);
@@ -57,9 +57,9 @@ namespace Infrastructure.Persistence.MySql.Seed
                 return;
             var cars = new List<Car>
             {
-                new Car("SRC 455", "Mazda", "3", 2024, 250000){Location= bogota},
-                new Car("ERV 455", "Chevrolet", "onix", 2025, 200000){Location= bogota},
-                new Car("MTS 455", "Toyota", "hyluz", 2023, 350000){Location= bogota}
+                new(bogota, "SRC 455", "Mazda", "3", 2024, 250000),
+                new(bogota, "ERV 455", "Chevrolet", "onix", 2025, 200000),
+                new(bogota, "MTS 455", "Toyota", "hyluz", 2023, 350000)
             };
 
             _context.Cars.AddRange(cars);

@@ -19,13 +19,14 @@ namespace UnitTests.Application.Modules.CarTests
         [Fact]
         public async Task Handle_ShouldReturnMappedCars_WhenCarsAreAvailable()
         {
-            var locationId = Guid.NewGuid();
+            Location location = new("Cundinamarca", "Bogotá", "Cl 7", "La 7");
+            var locationId = location.Id;
             var startDate = DateTime.Today;
             var endDate = DateTime.Today.AddDays(3);
 
             List<Car> cars =
             [
-            new("ABC123", "Toyota", "Corolla", 2022, 120000)
+            new(location, "ABC123", "Toyota", "Corolla", 2022, 120000)
             {
                 Id = Guid.NewGuid(),               
                 Type = CarType.Sedan,

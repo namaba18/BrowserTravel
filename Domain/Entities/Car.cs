@@ -67,14 +67,14 @@ namespace Domain.Entities
             
         }
 
-        public Car(string plate, string brand, string model, int year, decimal price)
+        public Car(Location location, string plate, string brand, string model, int year, decimal price)
         {
             Plate=plate;
             Brand=brand;
             Model=model;
             Year=year;
             PricePerDay=price;
-
+            Location=location;
         }
 
     }
