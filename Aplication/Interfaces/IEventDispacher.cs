@@ -1,6 +1,6 @@
 ﻿namespace Aplication.Interfaces
 {
-    public interface IEventDispacher
+    public interface IEventDispatcher
     {
         Task DispatchAsync(object domainEvent);
     }

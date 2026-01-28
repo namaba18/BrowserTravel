@@ -1,31 +1,11 @@
-using Aplication.Interfaces;
-using Domain.Events;
-using Infrastructure.Events;
-using Infrastructure.Events.Handlers;
-using Infrastructure.Persistence.Mongo;
+using Infrastructure;
 using Infrastructure.Persistence.Mongo.Seed;
-using Infrastructure.Persistence.MySql;
 using Infrastructure.Persistence.MySql.Seed;
-using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-//Pasar a infrastructure
 
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
-
-builder.Services.AddTransient<MySqlSeed>();
-
-builder.Services.Configure<MongoSettings>(builder.Configuration.GetSection("Mongo"));
-builder.Services.AddSingleton<MongoContext>();
-
-builder.Services.AddTransient<MongoSeed>();
-
-builder.Services.AddScoped<IEventDispacher, InMemoryEventDispatcher>();
-builder.Services.AddScoped<IDomainEventHandler<CreateResevationEvent>, CarReservedEventHandler>();
-
+builder.Services.AddInfrastructure(builder.Configuration);
 
 // Add services to the container.
 

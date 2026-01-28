@@ -5,6 +5,7 @@
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
 
+        private DateRange() { }
 
         public DateRange(DateTime start, DateTime end)
         {

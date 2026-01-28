@@ -1,4 +1,5 @@
 ﻿
+using Infrastructure.Persistence.Mongo.Models;
 using MongoDB.Driver;
 
 namespace Infrastructure.Persistence.Mongo.Seed
@@ -19,13 +20,27 @@ namespace Infrastructure.Persistence.Mongo.Seed
 
         private async Task SeedCarAvailability()
         {
-            var collection = _context.CarAvailability;
+            var collection = _context.CarType;
 
-            if (await collection.CountDocumentsAsync(FilterDefinition<Models.CarAvailability>.Empty) == 0)
+            if (await collection.CountDocumentsAsync(FilterDefinition<CarType>.Empty) == 0)
             {
-                var initialData = new List<Models.CarAvailability>
+                var initialData = new List<CarType>
                 {
-                    // Add initial CarAvailability data here
+                    new() {
+                        Id = Guid.NewGuid(),
+                        Name = "Sedan",
+                        Description = "A sedan car type"
+                    },
+                    new() {
+                        Id = Guid.NewGuid(),
+                        Name = "SUV",
+                        Description = "A sport utility vehicle car type"
+                    },
+                    new() {
+                        Id = Guid.NewGuid(),
+                        Name = "Hatchback",
+                        Description = "A hatchback car type"
+                    }
                 };
                 if (initialData.Count > 0)
                 {

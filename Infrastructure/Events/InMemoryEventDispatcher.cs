@@ -3,7 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Infrastructure.Events
 {
-    public class InMemoryEventDispatcher : IEventDispacher
+    public class InMemoryEventDispatcher : IEventDispatcher
     {
         private readonly IServiceProvider _serviceProvider;
 
