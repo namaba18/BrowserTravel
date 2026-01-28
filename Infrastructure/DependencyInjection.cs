@@ -3,8 +3,6 @@ using Domain.Events;
 using Domain.Interfaces.Repositories;
 using Infrastructure.Events;
 using Infrastructure.Events.Handlers;
-using Infrastructure.Persistence.Mongo;
-using Infrastructure.Persistence.Mongo.Seed;
 using Infrastructure.Persistence.MySql;
 using Infrastructure.Persistence.MySql.Repositories;
 using Infrastructure.Persistence.MySql.Seed;
@@ -16,9 +14,9 @@ namespace Infrastructure
 {
     public static class DependencyInjection
     {
-        public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration, bool isTest)
         {
-            AddDbContext(services, configuration);
+            AddDbContext(services, configuration, isTest);
             services.AddScoped<IEventDispatcher, InMemoryEventDispatcher>();
             services.AddScoped<IDomainEventHandler<CarResevedEvent>, CarReservedEventHandler>();
             services.AddScoped<ICarRepository, CarRepository>();
@@ -28,16 +26,16 @@ namespace Infrastructure
             return services;
         }
 
-        private static void AddDbContext(IServiceCollection services, IConfiguration configuration)
+        private static void AddDbContext(IServiceCollection services, IConfiguration configuration, bool isTest)
         {
-            var connectionString = configuration.GetConnectionString("Database");
-            services.AddDbContext<AppDbContext>(options =>
-                options.UseMySql(connectionString, new MySqlServerVersion(new Version(12, 11, 0))));
+            if (!isTest)
+            {
+                var connectionString = configuration.GetConnectionString("Database");
+                services.AddDbContext<AppDbContext>(options =>
+                    options.UseMySql(connectionString, new MySqlServerVersion(new Version(12, 11, 0))));
 
-            services.AddTransient<MySqlSeed>();
-
-            
-                     
+                services.AddTransient<MySqlSeed>();
+            }        
         }
 
     }

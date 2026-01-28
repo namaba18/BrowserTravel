@@ -1,4 +1,5 @@
 using Aplication.Modules.Car;
+using Aplication.Modules.Reservation;
 using Infrastructure;
 using Infrastructure.Persistence.Mongo;
 using Infrastructure.Persistence.Mongo.Seed;
@@ -6,8 +7,8 @@ using Infrastructure.Persistence.MySql.Seed;
 
 var builder = WebApplication.CreateBuilder(args);
 
-
-builder.Services.AddInfrastructure(builder.Configuration);
+bool isTest = builder.Environment.EnvironmentName == "IntegrationTests";
+builder.Services.AddInfrastructure(builder.Configuration, isTest);
 builder.Services.Configure<MongoSettings>(builder.Configuration.GetSection("Mongo"));
 builder.Services.AddSingleton<MongoContext>();
 
@@ -15,6 +16,7 @@ builder.Services.AddTransient<MongoSeed>();
 builder.Services.AddMediatR(cfg =>
 {
     cfg.RegisterServicesFromAssembly(typeof(SearchCarsQueryHandler).Assembly);
+    cfg.RegisterServicesFromAssembly(typeof(CreateReservationCommand).Assembly);
 });
 // Add services to the container.
 
@@ -23,14 +25,16 @@ builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 
 var app = builder.Build();
-
-using (var scope = app.Services.CreateScope())
+if (app.Environment.IsDevelopment())
 {
-    var mysqlSeed = scope.ServiceProvider.GetRequiredService<MySqlSeed>();
-    await mysqlSeed.SeedAsync();
+    using (var scope = app.Services.CreateScope())
+    {
+        var mysqlSeed = scope.ServiceProvider.GetRequiredService<MySqlSeed>();
+        await mysqlSeed.SeedAsync();
 
-    var seed = scope.ServiceProvider.GetRequiredService<MongoSeed>();
-    await seed.SeedAsync();
+        var seed = scope.ServiceProvider.GetRequiredService<MongoSeed>();
+        await seed.SeedAsync();
+    }
 }
 
 // Configure the HTTP request pipeline.
@@ -46,3 +50,5 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+public partial class Program { }
