@@ -1,4 +1,4 @@
-using Aplication.Features.SearchCars;
+using Aplication.Modules.Car;
 using Infrastructure;
 using Infrastructure.Persistence.Mongo;
 using Infrastructure.Persistence.Mongo.Seed;

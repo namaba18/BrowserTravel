@@ -4,9 +4,9 @@ using Domain.Interfaces.Repositories;
 using Domain.ValueObjects;
 using MediatR;
 
-namespace Aplication.Features.ReservationHandlers
+namespace Aplication.Modules.Reservation
 {
-    public class CreateReservationCommand : IRequest
+    public class CreateReservationCommand : IRequest<bool>
     {
         public Guid CarId { get; set; }
         public Guid CustomerId { get; set; }
@@ -17,7 +17,7 @@ namespace Aplication.Features.ReservationHandlers
         public string? Note { get; set; }
     }
 
-    public class CreateReservationCommandHandler : IRequestHandler<CreateReservationCommand>
+    public class CreateReservationCommandHandler : IRequestHandler<CreateReservationCommand, bool>
     {
         private readonly IEventDispatcher _eventDispatcher;
         private readonly ICarRepository _carRepository;
@@ -33,15 +33,15 @@ namespace Aplication.Features.ReservationHandlers
             _locationRepository=locationRepository;
         }
 
-        public async Task Handle(CreateReservationCommand request, CancellationToken cancellationToken)
+        public async Task<bool> Handle(CreateReservationCommand request, CancellationToken cancellationToken)
         {
-            Car? car = await _carRepository.GetByIdAsync(request.CarId)??throw new DirectoryNotFoundException("Car not found");
+            Domain.Entities.Car? car = await _carRepository.GetByIdAsync(request.CarId)??throw new DirectoryNotFoundException("Car not found");
             Customer? customer = await _customerRepository.GetByIdAsync(request.CustomerId)??throw new DirectoryNotFoundException("Customer not found");
             Location? pickUpLocation = await _locationRepository.GetByIdAsync(request.PickUpLocationId)??throw new DirectoryNotFoundException("Pick-up location not found");
             Location? dropOffLocation = await _locationRepository.GetByIdAsync(request.DropOffLocationId)??throw new DirectoryNotFoundException("Drop-off location not found");
             DateRange dateRange = new(request.Start, request.End);
 
-            var reservation = new Reservation(car, customer, dateRange, pickUpLocation, dropOffLocation);
+            var reservation = new Domain.Entities.Reservation(car, customer, dateRange, pickUpLocation, dropOffLocation);
 
             await _reservationRepository.AddAsync(reservation);
 
@@ -51,6 +51,8 @@ namespace Aplication.Features.ReservationHandlers
             }
 
             reservation.ClearDomainEvents();
+
+            return true;
         }
     }
 }

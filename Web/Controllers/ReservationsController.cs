@@ -1,3 +1,5 @@
+using Aplication.Modules.Reservation;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Web.Controllers
@@ -5,18 +7,19 @@ namespace Web.Controllers
     [ApiController]
     [Route("[controller]")]
     public class ReservationsController : ControllerBase
-    {        
-        private readonly ILogger<ReservationsController> _logger;
+    {
+        private readonly IMediator _mediator;
 
-        public ReservationsController(ILogger<ReservationsController> logger)
+        public ReservationsController(IMediator mediator)
         {
-            _logger = logger;
+            _mediator = mediator;
         }
 
         [HttpPost(Name = "CreateReservation")]
-        public string Post()
+        public async Task<IActionResult> Post([FromBody] CreateReservationCommand command, CancellationToken ct)
         {
-            return "Reservation success";
+            var result = await _mediator.Send(command, ct);
+            return Ok(result);
         }
     }
 }

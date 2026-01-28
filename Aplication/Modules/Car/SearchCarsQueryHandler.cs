@@ -1,9 +1,8 @@
 ﻿using Aplication.DTOs;
-using Domain.Entities;
 using Domain.Interfaces.Repositories;
 using MediatR;
 
-namespace Aplication.Features.SearchCars
+namespace Aplication.Modules.Car
 {
     public class SearchCarsQuery : IRequest<List<SearchCarsResponse>>
     {
@@ -23,7 +22,7 @@ namespace Aplication.Features.SearchCars
 
         public async Task<List<SearchCarsResponse>> Handle(SearchCarsQuery request, CancellationToken ct)
         {
-            List<Car> cars = await _carRepository.GetAvailableAsync(request.LocationId, request.StartDate, request.EndDate);
+            List<Domain.Entities.Car> cars = await _carRepository.GetAvailableAsync(request.LocationId, request.StartDate, request.EndDate);
 
             var response = cars.Select(car => new SearchCarsResponse
             {

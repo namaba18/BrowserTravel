@@ -1,4 +1,4 @@
-using Aplication.Features.SearchCars;
+using Aplication.Modules.Car;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,12 +8,10 @@ namespace Web.Controllers
     [Route("[controller]")]
     public class CarsController : ControllerBase
     {
-        private readonly ILogger<CarsController> _logger;
         private readonly IMediator _mediator;
 
-        public CarsController(ILogger<CarsController> logger, IMediator mediator)
+        public CarsController(IMediator mediator)
         {
-            _logger = logger;
             _mediator = mediator;
         }
 
