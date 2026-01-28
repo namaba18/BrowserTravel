@@ -3,9 +3,9 @@ using Domain.Events;
 
 namespace Infrastructure.Events.Handlers
 {
-    public class CarReservedEventHandler : IDomainEventHandler<CreateResevationEvent>
+    public class CarReservedEventHandler : IDomainEventHandler<CarResevedEvent>
     {
-        public Task Handle(CreateResevationEvent domainEvent)
+        public Task Handle(CarResevedEvent domainEvent)
         {
             Console.WriteLine(
                 $"Vehicle {domainEvent.CarId} reserved");

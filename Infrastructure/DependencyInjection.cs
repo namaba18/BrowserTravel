@@ -18,7 +18,7 @@ namespace Infrastructure
         {
             AddDbContext(services, configuration);
             services.AddScoped<IEventDispatcher, InMemoryEventDispatcher>();
-            services.AddScoped<IDomainEventHandler<CreateResevationEvent>, CarReservedEventHandler>();
+            services.AddScoped<IDomainEventHandler<CarResevedEvent>, CarReservedEventHandler>();
             return services;
         }
 
@@ -30,10 +30,8 @@ namespace Infrastructure
 
             services.AddTransient<MySqlSeed>();
 
-            services.Configure<MongoSettings>(options => configuration.GetSection("Mongo"));
-            services.AddSingleton<MongoContext>();
-
-            services.AddTransient<MongoSeed>();           
+            
+                     
         }
 
     }

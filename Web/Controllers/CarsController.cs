@@ -1,22 +1,33 @@
+using Aplication.Features.SearchCars;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Web.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class CreateReservationController : ControllerBase
-    {        
-        private readonly ILogger<CreateReservationController> _logger;
+    public class CarsController : ControllerBase
+    {
+        private readonly ILogger<CarsController> _logger;
+        private readonly SearchCarsQueryHandler _handler;
 
-        public CreateReservationController(ILogger<CreateReservationController> logger)
+        public CarsController(ILogger<CarsController> logger, SearchCarsQueryHandler handler)
         {
             _logger = logger;
+            _handler = handler;
         }
 
-        [HttpPost(Name = "CreateReservation")]
-        public string Post()
+        [HttpGet(Name = "GetAvailableCars")]
+        public async Task<IActionResult> SearchCars([FromQuery] SearchCarsQuery request, CancellationToken ct)
         {
-            return "Reservation success";
+            var query = new SearchCarsQuery
+            {
+                LocationId = request.LocationId,
+                StartDate = request.StartDate,
+                EndDate = request.EndDate
+            };
+
+            var result = await _handler.Handle(query, ct);
+            return Ok(result);
         }
     }
 }

@@ -20,11 +20,11 @@ namespace Infrastructure.Persistence.Mongo.Seed
 
         private async Task SeedCarAvailability()
         {
-            var collection = _context.CarType;
+            var collection = _context.SearchCar;
 
-            if (await collection.CountDocumentsAsync(FilterDefinition<CarType>.Empty) == 0)
+            if (await collection.CountDocumentsAsync(FilterDefinition<SearchCar>.Empty) == 0)
             {
-                var initialData = new List<CarType>
+                var initialData = new List<SearchCar>
                 {
                     new() {
                         Id = Guid.NewGuid(),

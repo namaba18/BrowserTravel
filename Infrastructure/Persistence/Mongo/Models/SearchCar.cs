@@ -1,6 +1,6 @@
 ﻿namespace Infrastructure.Persistence.Mongo.Models
 {
-    public class CarType
+    public class SearchCar
     {
         public Guid Id { get; set; }
         public string Name { get; set; } = default!;

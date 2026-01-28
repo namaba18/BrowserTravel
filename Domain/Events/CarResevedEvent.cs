@@ -1,13 +1,13 @@
 ﻿namespace Domain.Events
 {
-    public class CreateResevationEvent
+    public class CarResevedEvent
     {
         public Guid CarId { get; }
         public Guid ReservationId { get; }
         public DateTime OccurredOn { get; }
 
 
-        public CreateResevationEvent(Guid carId, Guid reservationId)
+        public CarResevedEvent(Guid carId, Guid reservationId)
         {
             CarId = carId;
             ReservationId = reservationId;

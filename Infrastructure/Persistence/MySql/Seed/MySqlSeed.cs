@@ -37,9 +37,9 @@ namespace Infrastructure.Persistence.MySql.Seed
 
             var locations = new List<Location>
         {
-            new Location( "Cundinamarca", "Bogotá", "Cl 4 34 56"),
-            new Location( "Antioquia", "Medellin", "Cl 5 36 56"),
-            new Location( "Cauca", "Cali", "Cl 67 24 56"),
+            new Location( "Cundinamarca", "Bogotá", "Cl 4 34 56"){Name="Cundinamarca"},
+            new Location( "Antioquia", "Medellin", "Cl 5 36 56"){Name="Medellin"},
+            new Location( "Cauca", "Cali", "Cl 67 24 56"){Name="Cali"},
         };
 
             _context.Locations.AddRange(locations);
@@ -51,14 +51,15 @@ namespace Infrastructure.Persistence.MySql.Seed
             if (_context.Cars.Any())
                 return;
 
-            var bogota = _context.Locations.First(l => l.City == "Bogotá");
-            var medellin = _context.Locations.First(l => l.City == "Medellín");
+            var bogota = _context.Locations.FirstOrDefault(l => l.City == "Bogotá");
 
+            if (bogota == null)
+                return;
             var cars = new List<Car>
             {
-                new Car("SRC 455", "Mazda", "3", 2024, 250000),
-                new Car("ERV 455", "Chevrolet", "onix", 2025, 200000),
-                new Car("MTS 455", "Toyota", "hyluz", 2023, 350000)
+                new Car("SRC 455", "Mazda", "3", 2024, 250000){Location= bogota},
+                new Car("ERV 455", "Chevrolet", "onix", 2025, 200000){Location= bogota},
+                new Car("MTS 455", "Toyota", "hyluz", 2023, 350000){Location= bogota}
             };
 
             _context.Cars.AddRange(cars);

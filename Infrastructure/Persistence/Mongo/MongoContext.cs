@@ -12,10 +12,10 @@ namespace Infrastructure.Persistence.Mongo
         public MongoContext(IOptions<MongoSettings> options)
         {
             var client = new MongoClient(options.Value.ConnectionString);
-            _database = client.GetDatabase(options.Value.MongoDatabase);
+            _database = client.GetDatabase(options.Value.Database);
         }
 
-        public IMongoCollection<CarType> CarType =>
-            _database.GetCollection<CarType>("carType");
+        public IMongoCollection<SearchCar> SearchCar =>
+            _database.GetCollection<SearchCar>("searchCar");
     }
 }

@@ -29,7 +29,7 @@ namespace Domain.Entities
             PickUpLocation = PickUp;
             DropOffLocation = DropOff;
 
-            AddDomainEvent(new CreateResevationEvent(car.Id, Id));
+            AddDomainEvent(new CarResevedEvent(car.Id, Id));
         }
 
         private void AddDomainEvent(object domainEvent)

@@ -1,4 +1,5 @@
 using Infrastructure;
+using Infrastructure.Persistence.Mongo;
 using Infrastructure.Persistence.Mongo.Seed;
 using Infrastructure.Persistence.MySql.Seed;
 
@@ -6,7 +7,10 @@ var builder = WebApplication.CreateBuilder(args);
 
 
 builder.Services.AddInfrastructure(builder.Configuration);
+builder.Services.Configure<MongoSettings>(builder.Configuration.GetSection("Mongo"));
+builder.Services.AddSingleton<MongoContext>();
 
+builder.Services.AddTransient<MongoSeed>();
 // Add services to the container.
 
 builder.Services.AddControllers();
