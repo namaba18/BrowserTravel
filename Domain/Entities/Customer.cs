@@ -1,4 +1,6 @@
-﻿namespace Domain.Entities
+﻿using Domain.Common;
+
+namespace Domain.Entities
 {
     public class Customer : EntityBase
     {
@@ -8,9 +10,18 @@
         public string PhoneNumber { get; set; }
         public string DriverLicenseNumber { get; set; }
 
-        public Customer()
+        private Customer()
         {
 
+        }
+
+        public Customer(string firstName, string lastName, string email, string phoneNumber, string driverLicenseNumber)
+        {
+            FirstName = firstName;
+            LastName = lastName;
+            Email = email;
+            PhoneNumber = phoneNumber;
+            DriverLicenseNumber = driverLicenseNumber;
         }
     }
 }

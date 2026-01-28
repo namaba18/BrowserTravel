@@ -1,4 +1,6 @@
-﻿namespace Domain.Entities
+﻿using Domain.Common;
+
+namespace Domain.Entities
 {
     public enum CarType
     {
@@ -58,8 +60,9 @@
         public TransmissionType Transmission { get; set; }
         public CarStatus Status { get; set; }
         public Location Location { get; set; }
+        public List<Reservation> Reservations { get; set; } = new List<Reservation>();
 
-        public Car()
+        private Car()
         {
             
         }

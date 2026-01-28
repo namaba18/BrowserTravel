@@ -1,11 +1,11 @@
 ﻿using Domain.ValueObjects;
 
-namespace UnitTests
+namespace UnitTests.Domain.ValueObjects
 {
     public class DateRangeTests
     {
         [Fact]
-        public void Test1()
+        public void Overlaps_WhenRangesOverlap_ReturnsTrue()
         {
             var r1 = new DateRange(
                 new DateTime(2026, 1, 10),

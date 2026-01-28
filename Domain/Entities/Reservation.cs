@@ -1,4 +1,5 @@
-﻿using Domain.Events;
+﻿using Domain.Common;
+using Domain.Events;
 using Domain.ValueObjects;
 
 namespace Domain.Entities

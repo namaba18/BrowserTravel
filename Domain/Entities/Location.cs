@@ -1,4 +1,6 @@
-﻿namespace Domain.Entities
+﻿using Domain.Common;
+
+namespace Domain.Entities
 {
     public class Location : EntityBase
     {
@@ -8,7 +10,7 @@
         public string State { get; set; }
         
 
-        public Location() { }
+        private Location() { }
 
         public Location(string state, string city, string address)
         {

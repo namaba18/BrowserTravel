@@ -16,8 +16,20 @@ namespace Infrastructure.Persistence.MySql.Seed
         {
             await SeedLocations();
             await SeedCars();
+            await SeedCustomer();
         }
 
+        private async Task SeedCustomer()
+        {
+            if (_context.Customers.Any())
+                return;
+
+            List<Customer> customers =
+            [
+            new Customer("Juan", "Gomez", "juan@correo.com", "3001234567", "DL123456")
+            ];
+        }
+            
         private async Task SeedCars()
         {
             if (_context.Locations.Any())

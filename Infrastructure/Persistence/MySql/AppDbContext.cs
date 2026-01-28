@@ -20,7 +20,8 @@ namespace Infrastructure.Persistence.MySql
             base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<Car>(entity =>
             {
-                entity.HasKey(e => e.Id);                
+                entity.HasKey(e => e.Id);
+                entity.HasMany(c => c.Reservations).WithOne(r => r.Car);
             });
             modelBuilder.Entity<Customer>(entity =>
             {
