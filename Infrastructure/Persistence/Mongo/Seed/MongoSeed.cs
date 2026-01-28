@@ -24,24 +24,8 @@ namespace Infrastructure.Persistence.Mongo.Seed
 
             if (await collection.CountDocumentsAsync(FilterDefinition<SearchCar>.Empty) == 0)
             {
-                var initialData = new List<SearchCar>
-                {
-                    new() {
-                        Id = Guid.NewGuid(),
-                        Name = "Sedan",
-                        Description = "A sedan car type"
-                    },
-                    new() {
-                        Id = Guid.NewGuid(),
-                        Name = "SUV",
-                        Description = "A sport utility vehicle car type"
-                    },
-                    new() {
-                        Id = Guid.NewGuid(),
-                        Name = "Hatchback",
-                        Description = "A hatchback car type"
-                    }
-                };
+                var initialData = new List<SearchCar>();
+                
                 if (initialData.Count > 0)
                 {
                     await collection.InsertManyAsync(initialData);

@@ -1,4 +1,5 @@
 using Aplication.Features.SearchCars;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Web.Controllers
@@ -8,25 +9,18 @@ namespace Web.Controllers
     public class CarsController : ControllerBase
     {
         private readonly ILogger<CarsController> _logger;
-        private readonly SearchCarsQueryHandler _handler;
+        private readonly ISender _sender;
 
-        public CarsController(ILogger<CarsController> logger, SearchCarsQueryHandler handler)
+        public CarsController(ILogger<CarsController> logger, ISender sender)
         {
             _logger = logger;
-            _handler = handler;
+            _sender = sender;
         }
 
         [HttpGet(Name = "GetAvailableCars")]
-        public async Task<IActionResult> SearchCars([FromQuery] SearchCarsQuery request, CancellationToken ct)
+        public async Task<IActionResult> SearchCars([FromQuery] SearchCarsQuery query, CancellationToken ct)
         {
-            var query = new SearchCarsQuery
-            {
-                LocationId = request.LocationId,
-                StartDate = request.StartDate,
-                EndDate = request.EndDate
-            };
-
-            var result = await _handler.Handle(query, ct);
+            var result = await _sender.Send(query, ct);
             return Ok(result);
         }
     }
