@@ -33,14 +33,16 @@ namespace IntegrationTests
             using (var scope = _factory.Services.CreateScope())
             {
                 var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-                Car car = new("SLD 345", "Toyota", "corolla", 2023, 250000);
+                Location location = new("Cundinamarca", "Bogotá", "Cl 34") { Name = "test"};
+                context.Locations.Add(location);
+
+                Car car = new("SLD 345", "Toyota", "corolla", 2023, 250000) { Location = location};
                 context.Cars.Add(car);
 
                 Customer customer = new("Juan", "Perez", "3453453", "juan@correo.com", "ASD34534");
                 context.Customers.Add(customer);
 
-                Location location = new("Cundinamarca", "Bogotá", "Cl 34");
-                context.Locations.Add(location);
+                context.SaveChanges();
 
                 var command = new CreateReservationCommand
                 {
