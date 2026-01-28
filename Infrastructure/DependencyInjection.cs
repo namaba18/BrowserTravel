@@ -1,10 +1,12 @@
 ﻿using Aplication.Interfaces;
 using Domain.Events;
+using Domain.Interfaces.Repositories;
 using Infrastructure.Events;
 using Infrastructure.Events.Handlers;
 using Infrastructure.Persistence.Mongo;
 using Infrastructure.Persistence.Mongo.Seed;
 using Infrastructure.Persistence.MySql;
+using Infrastructure.Persistence.MySql.Repositories;
 using Infrastructure.Persistence.MySql.Seed;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -19,6 +21,10 @@ namespace Infrastructure
             AddDbContext(services, configuration);
             services.AddScoped<IEventDispatcher, InMemoryEventDispatcher>();
             services.AddScoped<IDomainEventHandler<CarResevedEvent>, CarReservedEventHandler>();
+            services.AddScoped<ICarRepository, CarRepository>();
+            services.AddScoped<IReservationRepository, ReservationRepository>();
+            services.AddScoped<ICustomerRepository, CustomerRepository>();
+            services.AddScoped<ILocationRepository, LocationRepository>();
             return services;
         }
 

@@ -1,3 +1,4 @@
+using Aplication.Features.SearchCars;
 using Infrastructure;
 using Infrastructure.Persistence.Mongo;
 using Infrastructure.Persistence.Mongo.Seed;
@@ -11,6 +12,10 @@ builder.Services.Configure<MongoSettings>(builder.Configuration.GetSection("Mong
 builder.Services.AddSingleton<MongoContext>();
 
 builder.Services.AddTransient<MongoSeed>();
+builder.Services.AddMediatR(cfg =>
+{
+    cfg.RegisterServicesFromAssembly(typeof(SearchCarsQueryHandler).Assembly);
+});
 // Add services to the container.
 
 builder.Services.AddControllers();

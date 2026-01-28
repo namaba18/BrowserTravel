@@ -9,18 +9,18 @@ namespace Web.Controllers
     public class CarsController : ControllerBase
     {
         private readonly ILogger<CarsController> _logger;
-        private readonly ISender _sender;
+        private readonly IMediator _mediator;
 
-        public CarsController(ILogger<CarsController> logger, ISender sender)
+        public CarsController(ILogger<CarsController> logger, IMediator mediator)
         {
             _logger = logger;
-            _sender = sender;
+            _mediator = mediator;
         }
 
         [HttpGet(Name = "GetAvailableCars")]
         public async Task<IActionResult> SearchCars([FromQuery] SearchCarsQuery query, CancellationToken ct)
         {
-            var result = await _sender.Send(query, ct);
+            var result = await _mediator.Send(query, ct);
             return Ok(result);
         }
     }
