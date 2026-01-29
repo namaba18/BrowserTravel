@@ -35,11 +35,33 @@ namespace Aplication.Modules.Reservation
 
         public async Task<bool> Handle(CreateReservationCommand request, CancellationToken cancellationToken)
         {
-            Domain.Entities.Car? car = await _carRepository.GetByIdAsync(request.CarId)??throw new DirectoryNotFoundException("Car not found");
-            Customer? customer = await _customerRepository.GetByIdAsync(request.CustomerId)??throw new DirectoryNotFoundException("Customer not found");
-            Location? pickUpLocation = await _locationRepository.GetByIdAsync(request.PickUpLocationId)??throw new DirectoryNotFoundException("Pick-up location not found");
-            Location? dropOffLocation = await _locationRepository.GetByIdAsync(request.DropOffLocationId)??throw new DirectoryNotFoundException("Drop-off location not found");
+            if (request.End <= request.Start)
+            {
+                throw new InvalidOperationException("End date must be after start date.");
+            }
+
+            Domain.Entities.Car? car = await _carRepository.GetByIdAsync(request.CarId)??throw new KeyNotFoundException("Car not found");
+            Customer? customer = await _customerRepository.GetByIdAsync(request.CustomerId)??throw new KeyNotFoundException("Customer not found");
+            Location? pickUpLocation = await _locationRepository.GetByIdAsync(request.PickUpLocationId)??throw new KeyNotFoundException("Pick-up location not found");
+            Location? dropOffLocation = await _locationRepository.GetByIdAsync(request.DropOffLocationId)??throw new KeyNotFoundException("Drop-off location not found");
             DateRange dateRange = new(request.Start, request.End);
+
+
+            if (car.Status != CarStatus.Available)
+            {
+                throw new InvalidOperationException("Car is not available for reservation.");
+            }
+
+            if (car.Reservations.Any(r => r.DateRange.Overlaps(dateRange))) 
+            { 
+                throw new InvalidOperationException("Car is already reserved for the selected date range.");
+            }
+
+            if (dropOffLocation.Country != pickUpLocation.Country) 
+            { 
+                throw new InvalidOperationException("Drop-off location must be in the same Country as pick-up location.");
+            }
+
 
             var reservation = new Domain.Entities.Reservation(car, customer, dateRange, pickUpLocation, dropOffLocation);
 

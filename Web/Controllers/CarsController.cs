@@ -16,7 +16,7 @@ namespace Web.Controllers
         }
 
         [HttpGet(Name = "GetAvailableCars")]
-        public async Task<IActionResult> SearchCars([FromQuery] GetAvailableCarsQuery query, CancellationToken ct)
+        public async Task<IActionResult> GetAvailableCars([FromQuery] GetAvailableCarsQuery query, CancellationToken ct)
         {
             var result = await _mediator.Send(query, ct);
             return Ok(result);

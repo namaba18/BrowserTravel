@@ -30,7 +30,7 @@ namespace IntegrationTests
             {
                 var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
 
-                Location location = new("Cundinamarca", "Bogotá", "Cl 34", "test");
+                Location location = new("Colombia", "Cundinamarca", "Bogotá", "Cl 34", "test");
                 context.Locations.Add(location);
 
                 Car car = new(location, "SLD 345", "Toyota", "corolla", 2023, 250000);

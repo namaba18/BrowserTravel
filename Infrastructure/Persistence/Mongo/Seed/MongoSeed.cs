@@ -14,16 +14,30 @@ namespace Infrastructure.Persistence.Mongo.Seed
 
         public async Task SeedAsync()
         {
-            await SeedCarAvailability();
+            await SeedCarType();
         }
 
-        private async Task SeedCarAvailability()
+        private async Task SeedCarType()
         {
-            var collection = _context.SearchCar;
+            var collection = _context.CarTypes;
 
-            if (await collection.CountDocumentsAsync(FilterDefinition<SearchCar>.Empty) == 0)
+            if (await collection.CountDocumentsAsync(FilterDefinition<CarType>.Empty) == 0)
             {
-                var initialData = new List<SearchCar>();
+                var initialData = new List<CarType>() 
+                { 
+                    new() 
+                    { 
+                        Id = Guid.NewGuid().ToString(), 
+                        Name = "Suv", 
+                        Description="A hybrid vehicle between a car and a truck, combining the height and traction of a 4x4 with the comfort and handling of a car." 
+                    },
+                    new()
+                    {
+                        Id = Guid.NewGuid().ToString(),
+                        Name = "Sedan",
+                        Description="Standard passenger car, easily recognizable by its three-box body."
+                    }
+                };
 
                 if (initialData.Count > 0)
                 {

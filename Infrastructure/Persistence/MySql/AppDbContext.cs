@@ -22,6 +22,12 @@ namespace Infrastructure.Persistence.MySql
             {
                 entity.HasKey(e => e.Id);
                 entity.HasMany(c => c.Reservations).WithOne(r => r.Car);
+                entity.Property(e => e.Color).HasConversion(l => l.ToString(), l => Enum.Parse<Color>(l)).IsRequired().HasMaxLength(100);
+                entity.Property(e => e.Fuel).HasConversion(l => l.ToString(), l => Enum.Parse<FuelType>(l)).IsRequired().HasMaxLength(100);
+                entity.Property(e => e.Transmission).HasConversion(l => l.ToString(), l => Enum.Parse<TransmissionType>(l)).IsRequired().HasMaxLength(100);
+                entity.Property(e => e.Type).HasConversion(l => l.ToString(), l => Enum.Parse<CarTypeEnum>(l)).IsRequired().HasMaxLength(100);
+                entity.Property(e => e.Status).HasConversion(l => l.ToString(), l => Enum.Parse<CarStatus>(l)).IsRequired().HasMaxLength(100);
+
             });
             modelBuilder.Entity<Customer>(entity =>
             {
@@ -34,10 +40,17 @@ namespace Infrastructure.Persistence.MySql
             modelBuilder.Entity<Location>(entity =>
             {
                 entity.HasKey(e => e.Id);
+                entity.Property(e => e.Country).HasDefaultValue("Colombia").IsRequired().HasMaxLength(100);
+                entity.Property(e => e.State).IsRequired().HasMaxLength(100);
+                entity.Property(e => e.City).IsRequired().HasMaxLength(100);
+                entity.Property(e => e.Address).IsRequired().HasMaxLength(200);
             });
             modelBuilder.Entity<Reservation>(entity =>
             {
                 entity.HasKey(e => e.Id);
+                entity.Property(r => r.Note).HasMaxLength(255);
+                entity.HasOne(r => r.PickUpLocation).WithMany().HasForeignKey("PickUpLocationId").IsRequired();
+                entity.HasOne(r => r.DropOffLocation).WithMany().HasForeignKey("DropOffLocationId").IsRequired();
                 entity.OwnsOne(r => r.DateRange, dr =>
                 {
                     dr.Property(p => p.StartDate)

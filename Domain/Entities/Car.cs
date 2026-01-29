@@ -2,7 +2,7 @@
 
 namespace Domain.Entities
 {
-    public enum CarType
+    public enum CarTypeEnum
     {
         Sedan,
         SUV,
@@ -42,9 +42,7 @@ namespace Domain.Entities
     public enum CarStatus
     {
         Available,
-        Rented,
-        Maintenance,
-        Reserved
+        Maintenance
     }
 
     public class Car : EntityBase
@@ -54,7 +52,7 @@ namespace Domain.Entities
         public string Model { get; set; }
         public int Year { get; set; }
         public decimal PricePerDay { get; set; }
-        public CarType Type { get; set; }
+        public CarTypeEnum Type { get; set; }
         public FuelType Fuel { get; set; }
         public Color Color { get; set; }
         public TransmissionType Transmission { get; set; }
@@ -64,7 +62,7 @@ namespace Domain.Entities
 
         private Car()
         {
-            
+
         }
 
         public Car(Location location, string plate, string brand, string model, int year, decimal price)
@@ -75,6 +73,11 @@ namespace Domain.Entities
             Year=year;
             PricePerDay=price;
             Location=location;
+            Type=CarTypeEnum.Sedan;
+            Status=CarStatus.Available;
+            Fuel=FuelType.Gasoline;
+            Color=Color.Silver;
+            Transmission=TransmissionType.Automatic;
         }
 
     }

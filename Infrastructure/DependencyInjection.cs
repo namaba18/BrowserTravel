@@ -24,7 +24,6 @@ namespace Infrastructure
             services.AddScoped<IReservationRepository, ReservationRepository>();
             services.AddScoped<ICustomerRepository, CustomerRepository>();
             services.AddScoped<ILocationRepository, LocationRepository>();
-            services.AddScoped<ISearchCarRepository, SearchCarRepository>();
             return services;
         }
 

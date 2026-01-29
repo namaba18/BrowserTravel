@@ -15,7 +15,7 @@ namespace Infrastructure.Persistence.Mongo
             _database = client.GetDatabase(options.Value.Database);
         }
 
-        public IMongoCollection<SearchCar> SearchCar =>
-            _database.GetCollection<SearchCar>("searchCar");
+        public IMongoCollection<CarType> CarTypes =>
+            _database.GetCollection<CarType>("carTypes");
     }
 }

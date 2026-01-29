@@ -21,8 +21,8 @@ namespace Infrastructure.Persistence.MySql.Repositories
         {
             return await _context.Cars
                 .Include(c => c.Reservations)
-                .Where(c => c.Location.Id == locationId && c.Status == CarStatus.Available)
-                .Where(c => !c.Reservations.Any(r => r.DateRange.StartDate < end && r.DateRange.EndDate > start))
+                .Include(c => c.Location)
+                .Where(c => c.Location.Id == locationId && c.Status == CarStatus.Available && !c.Reservations.Any(r => r.DateRange.StartDate < end && r.DateRange.EndDate > start))
                 .ToListAsync();
         }
 

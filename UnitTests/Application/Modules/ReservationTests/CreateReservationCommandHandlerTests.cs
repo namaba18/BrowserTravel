@@ -35,7 +35,7 @@ namespace UnitTests.Application.Modules.ReservationTests
         [Fact]
         public async Task Handle_ShouldCreateReservation_AndDispatchEvents()
         {
-            Location location = new("Cundinamarca", "Bogotá", "Cr 33", "La 33");
+            Location location = new("Colombia", "Cundinamarca", "Bogotá", "Cr 33", "La 33");
             var carId = Guid.NewGuid();
             var customerId = Guid.NewGuid();
             var pickUpId = Guid.NewGuid();
@@ -43,8 +43,8 @@ namespace UnitTests.Application.Modules.ReservationTests
 
             var car = new Car(location, "ABC123", "Toyota", "Corolla", 2022, 120);
             var customer = new Customer("John", "Doe", "john@doe.com", "34345252", "1234245235");
-            var pickUpLocation = new Location("Cundinamarca","Bogotá","Cr 33", "La 33");
-            var dropOffLocation = new Location("Antioquia", "Medellín", "Cl 56", "La 56");
+            var pickUpLocation = new Location("Colombia", "Cundinamarca","Bogotá","Cr 33", "La 33");
+            var dropOffLocation = new Location("Colombia", "Antioquia", "Medellín", "Cl 56", "La 56");
 
             _carRepository.GetByIdAsync(carId).Returns(car);
             _customerRepository.GetByIdAsync(customerId).Returns(customer);
@@ -88,14 +88,14 @@ namespace UnitTests.Application.Modules.ReservationTests
                 End = DateTime.Today.AddDays(1)
             };
 
-            await Assert.ThrowsAsync<DirectoryNotFoundException>(() =>
+            await Assert.ThrowsAsync<KeyNotFoundException>(() =>
                 _handler.Handle(command, CancellationToken.None));
         }
 
         [Fact]
         public async Task Handle_ShouldThrow_WhenCustomerDoesNotExist()
         {
-            Location location = new("Cundinamarca", "Bogotá", "Cr 33", "La 33");
+            Location location = new("Colombia", "Cundinamarca", "Bogotá", "Cr 33", "La 33");
 
             _carRepository.GetByIdAsync(Arg.Any<Guid>())
                 .Returns(new Car(location, "ABC123", "Toyota", "Corolla", 2022, 100));
@@ -113,14 +113,14 @@ namespace UnitTests.Application.Modules.ReservationTests
                 End = DateTime.Today.AddDays(1)
             };
 
-            await Assert.ThrowsAsync<DirectoryNotFoundException>(() =>
+            await Assert.ThrowsAsync<KeyNotFoundException>(() =>
                 _handler.Handle(command, CancellationToken.None));
         }
 
         [Fact]
         public async Task Handle_ShouldThrow_WhenPickUpLocationDoesNotExist()
         {
-            Location location = new("Cundinamarca", "Bogotá", "Cr 33", "La 33");
+            Location location = new("Colombia", "Cundinamarca", "Bogotá", "Cr 33", "La 33");
 
             _carRepository.GetByIdAsync(Arg.Any<Guid>())
                 .Returns(new Car(location, "ABC123", "Toyota", "Corolla", 2022, 100));
@@ -141,7 +141,7 @@ namespace UnitTests.Application.Modules.ReservationTests
                 End = DateTime.Today.AddDays(1)
             };
 
-            await Assert.ThrowsAsync<DirectoryNotFoundException>(() =>
+            await Assert.ThrowsAsync<KeyNotFoundException>(() =>
                 _handler.Handle(command, CancellationToken.None));
         }
     }
