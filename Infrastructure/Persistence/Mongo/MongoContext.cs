@@ -1,4 +1,4 @@
-﻿using Infrastructure.Persistence.Mongo.Models;
+﻿using Domain.Models;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 

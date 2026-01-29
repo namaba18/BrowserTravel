@@ -1,19 +1,65 @@
 ﻿using Aplication.Modules.Car;
 using Domain.Entities;
 using Domain.Interfaces.Repositories;
+using Domain.Models;
 using NSubstitute;
 
 namespace UnitTests.Application.Modules.CarTests
 {
     public class SearchCarsQueryHandlerTests
     {
+        private readonly ISearchCarRepository _mongoRepository;
         private readonly ICarRepository _carRepository;
-        private readonly SearchCarsQueryHandler _handler;
+        private readonly GetAvailableCarsQueryHandler _handler;
 
         public SearchCarsQueryHandlerTests()
         {
             _carRepository = Substitute.For<ICarRepository>();
-            _handler = new SearchCarsQueryHandler(_carRepository);
+            _mongoRepository = Substitute.For<ISearchCarRepository>();
+            _handler = new GetAvailableCarsQueryHandler(_mongoRepository, _carRepository);
+        }
+
+        [Fact]
+        public async Task Handle_WhenCacheExists_ReturnsCarsFromMongo()
+        {
+            // Arrange
+            var query = new GetAvailableCarsQuery
+            {
+                LocationId = Guid.NewGuid(),
+                StartDate = DateTime.Today,
+                EndDate = DateTime.Today.AddDays(3)
+            };
+
+            var cached = new SearchCar
+            {
+                Cars =
+            {
+                new CarResult
+                {
+                    CarId = Guid.NewGuid().ToString(),
+                    Model = "Mazda 3",
+                    PricePerDay = 120
+                }
+            }
+            };
+
+            _mongoRepository
+                .GetAsync(query.LocationId, query.StartDate, query.EndDate, Arg.Any<CancellationToken>())
+                .Returns(cached);
+
+            // Act
+            var result = await _handler.Handle(query, CancellationToken.None);
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.Single(result);
+            Assert.Equal("Mazda 3", result[0].Model);
+            Assert.Equal(120, result[0].PricePerDay);
+
+            // ❗ Validación CLAVE
+            await _carRepository
+                .DidNotReceive()
+                .GetAvailableCarsAsync(Arg.Any<Guid>(), Arg.Any<DateTime>(), Arg.Any<DateTime>());
         }
 
         [Fact]
@@ -37,11 +83,15 @@ namespace UnitTests.Application.Modules.CarTests
             }
             ];
 
+            _mongoRepository
+                .GetAsync(locationId, startDate, endDate, new CancellationToken())
+                .Returns((SearchCar?)null);
+
             _carRepository
-                .GetAvailableAsync(locationId, startDate, endDate)
+                .GetAvailableCarsAsync(locationId, startDate, endDate)
                 .Returns(cars);
 
-            var query = new SearchCarsQuery
+            var query = new GetAvailableCarsQuery
             {
                 LocationId = locationId,
                 StartDate = startDate,
@@ -60,17 +110,17 @@ namespace UnitTests.Application.Modules.CarTests
             Assert.Equal("Sedan", car.Type);
 
             await _carRepository.Received(1)
-                .GetAvailableAsync(locationId, startDate, endDate);
+                .GetAvailableCarsAsync(locationId, startDate, endDate);
         }
 
         [Fact]
         public async Task Handle_ShouldReturnEmptyList_WhenNoCarsAreAvailable()
         {
             _carRepository
-                .GetAvailableAsync(Arg.Any<Guid>(), Arg.Any<DateTime>(), Arg.Any<DateTime>())
+                .GetAvailableCarsAsync(Arg.Any<Guid>(), Arg.Any<DateTime>(), Arg.Any<DateTime>())
                 .Returns([]);
 
-            var query = new SearchCarsQuery
+            var query = new GetAvailableCarsQuery
             {
                 LocationId = Guid.NewGuid(),
                 StartDate = DateTime.Today,

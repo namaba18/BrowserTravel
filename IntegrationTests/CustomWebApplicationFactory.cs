@@ -1,4 +1,5 @@
-﻿using Infrastructure.Persistence.MySql;
+﻿using Infrastructure.Persistence.Mongo;
+using Infrastructure.Persistence.MySql;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Data.Sqlite;
@@ -6,12 +7,13 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
+
 namespace IntegrationTests
 {
     public class CustomWebApplicationFactory<TProgram> : WebApplicationFactory<TProgram> where TProgram : class
     {
         private readonly SqliteConnection _connection;
-
+               
         public CustomWebApplicationFactory()
         {
             _connection = new SqliteConnection("DataSource=:memory:");
@@ -36,6 +38,11 @@ namespace IntegrationTests
                 var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
                 db.Database.EnsureCreated();
 
+                services.Configure<MongoSettings>(opt =>
+                {
+                    opt.ConnectionString = "mongodb://localhost:27017";
+                    opt.Database = "browsertravel_test";
+                });
             });
         }
 

@@ -3,6 +3,7 @@ using Domain.Events;
 using Domain.Interfaces.Repositories;
 using Infrastructure.Events;
 using Infrastructure.Events.Handlers;
+using Infrastructure.Persistence.Mongo.Repositories;
 using Infrastructure.Persistence.MySql;
 using Infrastructure.Persistence.MySql.Repositories;
 using Infrastructure.Persistence.MySql.Seed;
@@ -23,6 +24,7 @@ namespace Infrastructure
             services.AddScoped<IReservationRepository, ReservationRepository>();
             services.AddScoped<ICustomerRepository, CustomerRepository>();
             services.AddScoped<ILocationRepository, LocationRepository>();
+            services.AddScoped<ISearchCarRepository, SearchCarRepository>();
             return services;
         }
 

@@ -17,7 +17,7 @@ namespace Infrastructure.Persistence.MySql.Repositories
             await _context.Cars.AddAsync(car);
         }
 
-        public async Task<List<Car>> GetAvailableAsync(Guid locationId, DateTime start, DateTime end)
+        public async Task<List<Car>> GetAvailableCarsAsync(Guid locationId, DateTime start, DateTime end)
         {
             return await _context.Cars
                 .Include(c => c.Reservations)

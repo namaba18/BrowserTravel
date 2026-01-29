@@ -47,11 +47,11 @@ namespace IntegrationTests
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
             var cars = await response.Content
-                .ReadFromJsonAsync<List<SearchCarsResponse>>();
+                .ReadFromJsonAsync<List<CarDto>>();
 
             Assert.NotNull(cars);
             Assert.Single(cars);
-            Assert.Equal("SLD 345", cars![0].Plate);            
+            Assert.Equal("SLD 345", cars![0].Plate);
         }
     }
 }

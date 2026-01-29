@@ -1,5 +1,4 @@
-﻿
-using Infrastructure.Persistence.Mongo.Models;
+﻿using Domain.Models;
 using MongoDB.Driver;
 
 namespace Infrastructure.Persistence.Mongo.Seed
@@ -25,7 +24,7 @@ namespace Infrastructure.Persistence.Mongo.Seed
             if (await collection.CountDocumentsAsync(FilterDefinition<SearchCar>.Empty) == 0)
             {
                 var initialData = new List<SearchCar>();
-                
+
                 if (initialData.Count > 0)
                 {
                     await collection.InsertManyAsync(initialData);

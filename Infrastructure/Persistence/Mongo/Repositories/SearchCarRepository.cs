@@ -1,37 +1,30 @@
-﻿using Infrastructure.Persistence.Mongo.Models;
+﻿using Domain.Interfaces.Repositories;
+using Domain.Models;
 using MongoDB.Driver;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Infrastructure.Persistence.Mongo.Repositories
 {
-    public class SearchCarRepository
+    public class SearchCarRepository : ISearchCarRepository
     {
-        private readonly IMongoCollection<SearchCar> _collection;
+        private readonly MongoContext _context;
 
-        public SearchCarRepository(IMongoDatabase database)
+        public SearchCarRepository(MongoContext context)
         {
-            _collection = database.GetCollection<SearchCar>("search_cars");
+           _context = context;
         }
 
-        public async Task<SearchCar?> GetAsync(
-        Guid locationId,
-        DateTime start,
-        DateTime end)
+        public async Task<SearchCar?> GetAsync(Guid locationId, DateTime start, DateTime end, CancellationToken cancellationToken)
         {
-            return await _collection.Find(x =>
-                x.LocationId == locationId &&
+            return await _context.SearchCar.Find(x =>
+                x.LocationId == locationId.ToString() &&
                 x.Start == start &&
                 x.End == end)
-                .FirstOrDefaultAsync();
+                .FirstOrDefaultAsync(cancellationToken);
         }
 
         public async Task SaveAsync(SearchCar search)
         {
-            await _collection.ReplaceOneAsync(
+            await _context.SearchCar.ReplaceOneAsync(
                 x => x.Id == search.Id,
                 search,
                 new ReplaceOptions { IsUpsert = true });

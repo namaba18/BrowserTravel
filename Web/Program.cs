@@ -15,7 +15,7 @@ builder.Services.AddSingleton<MongoContext>();
 builder.Services.AddTransient<MongoSeed>();
 builder.Services.AddMediatR(cfg =>
 {
-    cfg.RegisterServicesFromAssembly(typeof(SearchCarsQueryHandler).Assembly);
+    cfg.RegisterServicesFromAssembly(typeof(GetAvailableCarsQueryHandler).Assembly);
     cfg.RegisterServicesFromAssembly(typeof(CreateReservationCommand).Assembly);
 });
 // Add services to the container.

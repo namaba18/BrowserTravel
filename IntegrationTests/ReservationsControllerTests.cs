@@ -6,8 +6,6 @@ using Microsoft.Extensions.DependencyInjection;
 using System.Net;
 using System.Net.Http.Json;
 
-
-
 namespace IntegrationTests
 {
     public class ReservationsControllerTests : IClassFixture<CustomWebApplicationFactory<Program>>
@@ -34,7 +32,7 @@ namespace IntegrationTests
                 Location location = new("Cundinamarca", "Bogotá", "Cl 34", "test");
                 context.Locations.Add(location);
 
-                Car car = new(location"SLD 345", "Toyota", "corolla", 2023, 250000) ;
+                Car car = new(location, "SLD 345", "Toyota", "corolla", 2023, 250000) ;
                 context.Cars.Add(car);
 
                 Customer customer = new("Juan", "Perez", "3453453", "juan@correo.com", "ASD34534");

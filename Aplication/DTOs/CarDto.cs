@@ -1,6 +1,6 @@
 ﻿namespace Aplication.DTOs
 {
-    public class SearchCarsResponse
+    public class CarDto
     {
         public Guid Id { get; set; }
         public string Plate { get; set; } = default!;
