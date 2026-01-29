@@ -5,12 +5,12 @@ using NSubstitute;
 
 namespace UnitTests.Application.Modules.CarTests
 {
-    public class SearchCarsQueryHandlerTests
+    public class GetAvailableCarsQueryHandlerTests
     {
         private readonly ICarRepository _carRepository;
         private readonly GetAvailableCarsQueryHandler _handler;
 
-        public SearchCarsQueryHandlerTests()
+        public GetAvailableCarsQueryHandlerTests()
         {
             _carRepository = Substitute.For<ICarRepository>();
             _handler = new GetAvailableCarsQueryHandler(_carRepository);

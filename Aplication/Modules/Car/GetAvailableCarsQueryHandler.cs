@@ -1,6 +1,5 @@
 ﻿using Aplication.DTOs;
 using Domain.Interfaces.Repositories;
-using Domain.Models;
 using MediatR;
 
 namespace Aplication.Modules.Car
@@ -22,7 +21,7 @@ namespace Aplication.Modules.Car
         }
 
         public async Task<List<CarDto>> Handle(GetAvailableCarsQuery query, CancellationToken ct)
-        {            
+        {
             List<Domain.Entities.Car> cars = await _carRepository.GetAvailableCarsAsync(query.LocationId, query.StartDate, query.EndDate);
 
             var result = cars.Select(car => new CarDto
@@ -39,7 +38,7 @@ namespace Aplication.Modules.Car
                 Transmission = car.Transmission.ToString(),
                 Status = car.Status.ToString()
             }).ToList();
-            
+
             return result;
         }
     }

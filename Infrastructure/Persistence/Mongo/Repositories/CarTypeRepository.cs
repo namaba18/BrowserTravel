@@ -1,5 +1,6 @@
 ﻿using Domain.Interfaces.Repositories;
 using Domain.Models;
+using MongoDB.Bson;
 using MongoDB.Driver;
 
 namespace Infrastructure.Persistence.Mongo.Repositories
@@ -13,9 +14,9 @@ namespace Infrastructure.Persistence.Mongo.Repositories
             _context = context;
         }
 
-        public async Task<CarType?> GetByIdAsync(string id)
+        public async Task<List<CarType>> GetAsync()
         {
-            return await _context.CarTypes.Find(ct => ct.Id == id).FirstOrDefaultAsync();
+            return await _context.CarTypes.Find(new BsonDocument()).ToListAsync();
         }
 
         public async Task SaveAsync(CarType carType)
